@@ -36,8 +36,8 @@ test('Logger methods', () => {
   expect(consoleSpy.mock.calls[4][0]).toContain('[VERBOSE]');
   expect(consoleSpy.mock.calls[4][0]).toContain('Verbose message');
 
-  logger.success('Log message');
+  logger.success('Success message');
   expect(consoleSpy).toHaveBeenCalledTimes(6);
   expect(consoleSpy.mock.calls[5][0]).toContain('[SUCCESS]');
-  expect(consoleSpy.mock.calls[5][0]).toContain('Log message');
+  expect(consoleSpy.mock.calls[5][0]).toContain('Success message');
 });
