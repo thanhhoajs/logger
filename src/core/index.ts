@@ -8,8 +8,8 @@ import {
 export class Logger implements ILogger {
   private static instance: Logger;
   private readonly logConfigs: Record<LogLevel, LogConfig> = {
-    INFO: { level: 'INFO', levelColor: Color.Blue, messageColor: Color.White },
-    LOG: { level: 'LOG', levelColor: Color.Green, messageColor: Color.Green },
+    INFO: { level: 'INFO', levelColor: Color.Blue, messageColor: Color.Blue },
+    SUCCESS: { level: 'SUCCESS', levelColor: Color.Green, messageColor: Color.Green },
     WARN: {
       level: 'WARN',
       levelColor: Color.Yellow,
@@ -55,7 +55,7 @@ export class Logger implements ILogger {
   }
 
   public success(message: string): void {
-    this.log(this.logConfigs.LOG, message);
+    this.log(this.logConfigs.SUCCESS, message);
   }
 
   public warn(message: string): void {
