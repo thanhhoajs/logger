@@ -9,7 +9,11 @@ export class Logger implements ILogger {
   private static instance: Logger;
   private readonly logConfigs: Record<LogLevel, LogConfig> = {
     INFO: { level: 'INFO', levelColor: Color.Blue, messageColor: Color.Blue },
-    SUCCESS: { level: 'SUCCESS', levelColor: Color.Green, messageColor: Color.Green },
+    SUCCESS: {
+      level: 'SUCCESS',
+      levelColor: Color.Green,
+      messageColor: Color.Green,
+    },
     WARN: {
       level: 'WARN',
       levelColor: Color.Yellow,
