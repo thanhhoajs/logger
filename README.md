@@ -25,7 +25,7 @@ bun add @thanhhoajs/logger
 ```typescript
 import { Logger } from '@thanhhoajs/logger';
 
-const logger = Logger.getInstance('EXAMPLE');
+const logger = Logger.get('EXAMPLE');
 
 logger.info('Application has started');
 logger.warn('This is a warning');

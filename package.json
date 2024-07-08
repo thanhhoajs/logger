@@ -1,7 +1,7 @@
 {
   "name": "@thanhhoajs/logger",
-  "version": "1.0.2",
-  "description": "Logger for @thanhhoajs",
+  "version": "1.0.3",
+  "description": "A powerful and flexible logger designed specifically for the @thanhhoajs ecosystem, optimized for high performance with Bun and TypeScript",
   "author": "Nguyen Nhu Khanh <kwalker.nnk@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/thanhhoajs/logger#readme",
