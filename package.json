@@ -1,6 +1,6 @@
 {
   "name": "@thanhhoajs/logger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A powerful and flexible logger designed specifically for the @thanhhoajs ecosystem, optimized for high performance with Bun and TypeScript",
   "author": "Nguyen Nhu Khanh <kwalker.nnk@gmail.com>",
   "license": "MIT",
@@ -20,21 +20,26 @@
     "typescript"
   ],
   "type": "module",
-  "module": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
+    "build": "bun run build.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"example/**/*.ts\"",
     "example": "bun run example/index.ts",
     "test": "bun test logger.test.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "bun-plugin-dts": "^0.2.3",
     "prettier": "^3.3.2"
   },
   "peerDependencies": {
