@@ -8,4 +8,8 @@ export enum Color {
   Cyan = '\x1b[36m',
   White = '\x1b[37m',
   Gray = '\x1b[90m',
+  DarkYellow = '\x1b[38;5;220m',
+  Silver = '\x1b[38;5;7m',
+  BrownGray = '\x1b[38;5;95m',
+  BrightWhite = '\x1b[97m',
 }
