@@ -4,4 +4,5 @@ export type LogLevel =
   | 'WARN'
   | 'DEBUG'
   | 'ERROR'
-  | 'VERBOSE';
+  | 'VERBOSE'
+  | 'TRACE';

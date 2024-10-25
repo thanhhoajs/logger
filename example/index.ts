@@ -7,3 +7,4 @@ logger.error('An error occurred!');
 logger.debug('Debug information');
 logger.verbose('Detailed information');
 logger.success('Operation successful');
+logger.trace('Tracing information');

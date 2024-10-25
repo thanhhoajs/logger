@@ -35,6 +35,14 @@ export class BaseLogger implements ILogger {
         messageColor: Color.Magenta,
       },
     ],
+    [
+      'TRACE',
+      {
+        level: 'TRACE',
+        levelColor: Color.BrownGray,
+        messageColor: Color.BrownGray,
+      },
+    ],
   ]);
 
   constructor(private name: string) {}
@@ -43,13 +51,25 @@ export class BaseLogger implements ILogger {
     return `${color}${text}${Color.Reset}`;
   }
 
-  private async log(config: LogConfig, message: string): Promise<void> {
+  private async log(config: LogConfig, ...messageParts: any[]): Promise<void> {
     const timestamp = new Date().toISOString();
+
     const logMessage =
-      `${this.colorize(`[${this.name}]`, Color.Magenta)} ` +
+      `${this.colorize(`[${this.name}]`, Color.DarkYellow)} ` +
       `${this.colorize(`[${config.level}]`, config.levelColor)} ` +
       `${this.colorize(timestamp, Color.Gray)}: ` +
-      `${this.colorize(message, config.messageColor)}`;
+      messageParts
+        .map((part) => {
+          if (typeof part === 'object') {
+            return this.colorize(
+              JSON.stringify(part, null, 2),
+              config.messageColor,
+            ); // Pretty-print JSON
+          } else {
+            return this.colorize(String(part), config.messageColor);
+          }
+        })
+        .join(' ');
 
     setImmediate(() => {
       try {
@@ -72,15 +92,19 @@ export class BaseLogger implements ILogger {
     await this.log(this.logConfigs.get('WARN')!, message);
   }
 
-  public async debug(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('DEBUG')!, message);
+  public async debug(...messageParts: any[]): Promise<void> {
+    await this.log(this.logConfigs.get('DEBUG')!, ...messageParts);
   }
 
-  public async error(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('ERROR')!, message);
+  public async error(...messageParts: any[]): Promise<void> {
+    await this.log(this.logConfigs.get('ERROR')!, ...messageParts);
   }
 
-  public async verbose(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('VERBOSE')!, message);
+  public async verbose(...messageParts: any[]): Promise<void> {
+    await this.log(this.logConfigs.get('VERBOSE')!, ...messageParts);
+  }
+
+  public async trace(...messageParts: any[]): Promise<void> {
+    await this.log(this.logConfigs.get('TRACE')!, ...messageParts);
   }
 }
