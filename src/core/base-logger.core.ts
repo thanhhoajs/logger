@@ -1,110 +1,84 @@
 import {
-  Color,
+  type Color,
   type ILogger,
   type LogConfig,
   type LogLevel,
+  Colors,
 } from '@thanhhoajs/logger';
 
 export class BaseLogger implements ILogger {
-  private readonly logConfigs: Map<LogLevel, LogConfig> = new Map([
-    [
-      'INFO',
-      { level: 'INFO', levelColor: Color.Blue, messageColor: Color.Blue },
-    ],
-    [
-      'SUCCESS',
-      { level: 'SUCCESS', levelColor: Color.Green, messageColor: Color.Green },
-    ],
-    [
-      'WARN',
-      { level: 'WARN', levelColor: Color.Yellow, messageColor: Color.Yellow },
-    ],
-    [
-      'DEBUG',
-      { level: 'DEBUG', levelColor: Color.Cyan, messageColor: Color.Cyan },
-    ],
-    [
-      'ERROR',
-      { level: 'ERROR', levelColor: Color.Red, messageColor: Color.Red },
-    ],
-    [
-      'VERBOSE',
-      {
-        level: 'VERBOSE',
-        levelColor: Color.Magenta,
-        messageColor: Color.Magenta,
-      },
-    ],
-    [
-      'TRACE',
-      {
-        level: 'TRACE',
-        levelColor: Color.BrownGray,
-        messageColor: Color.BrownGray,
-      },
-    ],
-  ]);
+  private static readonly LOG_CONFIGS: ReadonlyMap<LogLevel, LogConfig> =
+    new Map([
+      ['INFO', { level: 'INFO', levelColor: 'Blue', messageColor: 'Blue' }],
+      [
+        'SUCCESS',
+        { level: 'SUCCESS', levelColor: 'Green', messageColor: 'Green' },
+      ],
+      ['WARN', { level: 'WARN', levelColor: 'Yellow', messageColor: 'Yellow' }],
+      ['DEBUG', { level: 'DEBUG', levelColor: 'Cyan', messageColor: 'Cyan' }],
+      ['ERROR', { level: 'ERROR', levelColor: 'Red', messageColor: 'Red' }],
+      [
+        'VERBOSE',
+        { level: 'VERBOSE', levelColor: 'Magenta', messageColor: 'Magenta' },
+      ],
+      [
+        'TRACE',
+        { level: 'TRACE', levelColor: 'BrownGray', messageColor: 'BrownGray' },
+      ],
+    ]);
 
-  constructor(private name: string) {}
+  private readonly namePrefix: string;
 
-  private colorize(text: string, color: Color): string {
-    return `${color}${text}${Color.Reset}`;
+  constructor(private readonly name: string) {
+    this.namePrefix = `${Colors.DarkYellow}[${name}]${Colors.Reset} `;
   }
 
-  private async log(config: LogConfig, ...messageParts: any[]): Promise<void> {
+  private colorize(text: string, colorName: Color): string {
+    return `${Colors[colorName]}${text}${Colors.Reset}`;
+  }
+
+  private log(config: LogConfig, ...messageParts: any[]): void {
     const timestamp = new Date().toISOString();
+    const logLevel = this.colorize(`[${config.level}]`, config.levelColor);
+    const timestampStr = this.colorize(timestamp, 'Gray');
 
-    const logMessage =
-      `${this.colorize(`[${this.name}]`, Color.DarkYellow)} ` +
-      `${this.colorize(`[${config.level}]`, config.levelColor)} ` +
-      `${this.colorize(timestamp, Color.Gray)}: ` +
-      messageParts
-        .map((part) => {
-          if (typeof part === 'object') {
-            return this.colorize(
-              JSON.stringify(part, null, 2),
-              config.messageColor,
-            ); // Pretty-print JSON
-          } else {
-            return this.colorize(String(part), config.messageColor);
-          }
-        })
-        .join(' ');
+    const message = messageParts
+      .map((part) => {
+        if (part === null || part === undefined) return '';
+        return typeof part === 'object'
+          ? this.colorize(JSON.stringify(part, null, 2), config.messageColor)
+          : this.colorize(String(part), config.messageColor);
+      })
+      .join(' ');
 
-    setImmediate(() => {
-      try {
-        console.log(logMessage);
-      } catch (error) {
-        console.error('Failed to log message:', error);
-      }
-    });
+    console.log(`${this.namePrefix}${logLevel} ${timestampStr}: ${message}`);
   }
 
-  public async info(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('INFO')!, message);
+  public info(message: string): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('INFO')!, message);
   }
 
-  public async success(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('SUCCESS')!, message);
+  public success(message: string): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('SUCCESS')!, message);
   }
 
-  public async warn(message: string): Promise<void> {
-    await this.log(this.logConfigs.get('WARN')!, message);
+  public warn(message: string): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('WARN')!, message);
   }
 
-  public async debug(...messageParts: any[]): Promise<void> {
-    await this.log(this.logConfigs.get('DEBUG')!, ...messageParts);
+  public debug(...messageParts: any[]): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('DEBUG')!, ...messageParts);
   }
 
-  public async error(...messageParts: any[]): Promise<void> {
-    await this.log(this.logConfigs.get('ERROR')!, ...messageParts);
+  public error(...messageParts: any[]): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('ERROR')!, ...messageParts);
   }
 
-  public async verbose(...messageParts: any[]): Promise<void> {
-    await this.log(this.logConfigs.get('VERBOSE')!, ...messageParts);
+  public verbose(...messageParts: any[]): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('VERBOSE')!, ...messageParts);
   }
 
-  public async trace(...messageParts: any[]): Promise<void> {
-    await this.log(this.logConfigs.get('TRACE')!, ...messageParts);
+  public trace(...messageParts: any[]): void {
+    this.log(BaseLogger.LOG_CONFIGS.get('TRACE')!, ...messageParts);
   }
 }

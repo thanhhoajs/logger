@@ -10,9 +10,11 @@
 
     // Bundler mode
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
+    "declaration": true, // Generate .d.ts files
+    "declarationMap": true, // Generate sourcemaps for .d.ts
+    "sourceMap": true,
+    "outDir": "./dist", // Output to dist folder
+    "noEmit": false, // Allow emission of files
 
     // Best practices
     "strict": true,
@@ -27,5 +29,7 @@
     "paths": {
       "@thanhhoajs/logger": ["./src"]
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
