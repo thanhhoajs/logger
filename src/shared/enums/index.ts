@@ -1,15 +1,16 @@
-export enum Color {
-  Reset = '\x1b[0m',
-  Red = '\x1b[31m',
-  Green = '\x1b[32m',
-  Yellow = '\x1b[33m',
-  Blue = '\x1b[34m',
-  Magenta = '\x1b[35m',
-  Cyan = '\x1b[36m',
-  White = '\x1b[37m',
-  Gray = '\x1b[90m',
-  DarkYellow = '\x1b[38;5;220m',
-  Silver = '\x1b[38;5;7m',
-  BrownGray = '\x1b[38;5;95m',
-  BrightWhite = '\x1b[97m',
-}
+export const Colors = {
+  Reset: '\x1b[0m',
+  Red: Bun.color('red', 'ansi'),
+  Green: Bun.color('#00ff00', 'ansi'),
+  Yellow: Bun.color('#ffff00', 'ansi'),
+  Blue: Bun.color('#0000ff', 'ansi'),
+  Magenta: Bun.color('#ff00ff', 'ansi'),
+  Cyan: Bun.color('#00ffff', 'ansi'),
+  Gray: Bun.color('#808080', 'ansi'),
+  DarkYellow: Bun.color('hsl(50, 100%, 40%)', 'ansi'),
+  Silver: Bun.color('#c0c0c0', 'ansi'),
+  BrownGray: Bun.color('#8b7355', 'ansi'),
+  BrightWhite: Bun.color('#ffffff', 'ansi'),
+} as const;
+
+export type Color = keyof typeof Colors;
