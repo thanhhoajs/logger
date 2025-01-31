@@ -31,7 +31,7 @@
     }
   },
   "files": [
-    "dist"
+    "src"
   ],
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"example/**/*.ts\"",
